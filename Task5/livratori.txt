@@ -8,9 +8,3 @@
 1008,masina,6.5,0
 1009,scuter,7.8,0
 1010,bicicleta,8.7,1
-1,masina,10.0,0
-1,masina,10.0,0
-1,masina,10.0,0
-1,masina,10.0,0
-1,masina,10.0,0
-1,masina,10.0,0

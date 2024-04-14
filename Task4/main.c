@@ -224,22 +224,14 @@ livrator_bolt* inserareVectorDeepCopy(livrator_bolt* vector, int* dim, livrator_
 	return aux;
 }
 
-void dezalocareLivrator(livrator_bolt* livrator_bolt)
-{
-	if (livrator_bolt->automobil != NULL)
-	{
-		free(livrator_bolt->automobil);
-		livrator_bolt->automobil = NULL;
-	}
-}
-
 void dezalocareMatrice(livrator_bolt*** matrice, int** nr_coloane, int nr_linii)
 {
 	for (int i = 0; i < nr_linii; i++)
 	{
 		for (int j = 0; j < (*nr_coloane)[i]; j++)
 		{
-			dezalocareLivrator((matrice)[i][j]);
+			free((*matrice)[i][j].automobil);
+			(*matrice)[i][j].automobil = NULL;
 		}
 		free((*matrice)[i]);
 		(*matrice)[i] = NULL;
@@ -333,4 +325,6 @@ void main()
 
 	ordonareLiniiMatrice(matrice, nr_coloane, nr_linii);
 	afisareMatrice(matrice, nr_coloane, nr_linii);
+
+	dezalocareMatrice(&matrice, &nr_coloane, nr_linii);
 }
