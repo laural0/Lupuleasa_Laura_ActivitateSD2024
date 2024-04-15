@@ -396,14 +396,42 @@ Nod* interschimbare(Nod* lista, int poz1, int poz2) {
 	return lista;
 }
 
-void dezalocareLivrator(livrator_bolt* livrator_bolt)
+void dezalocareLivrator(livrator_bolt* livrator)
 {
-	if (livrator_bolt->automobil != NULL)
+	if (livrator->automobil != NULL)
 	{
-		free(livrator_bolt->automobil);
-		livrator_bolt->automobil = NULL;
+		free(livrator->automobil);
+		livrator->automobil = NULL;
 	}
 }
+
+void stergeDupaId(Nod** lista, int id)
+{
+	Nod* temp = *lista;
+
+	if (temp->livrator.cod == id)
+	{
+		*lista = (*lista)->next;
+		dezalocareLivrator(&temp->livrator);
+		free(temp);
+	}
+	else
+	{
+		while (temp->next != NULL && temp->next->livrator.cod != id)
+		{
+			temp = temp->next;
+		}
+
+		Nod* element = temp->next;
+
+		temp->next = element->next;
+
+		dezalocareLivrator(&element->livrator);
+
+		free(element);
+	}
+}
+
 void dezalocareLista(Nod** lista)
 {
 	Nod* temp;
@@ -438,12 +466,10 @@ void main()
 
 	afisareLista(lista);
 
-	lista = interschimbare(lista, 0, 1);
+	// lista = interschimbare(lista, 0, 1);
+
+	stergeDupaId(&lista, 1006);
 	printf("-------------------------------------\n");
-
-	afisareLista(lista);
-
-	dezalocareLista(&lista);
 
 	afisareLista(lista);
 }

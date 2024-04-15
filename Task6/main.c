@@ -434,7 +434,7 @@ void main()
 
 	printf("___________________________\n");
 
-	interschimbaElemente(&listaL, 0, 1);
+	interschimbaElemente(&listaL, 0, 4);
 	afisareLista(&listaL);
 
 	// stergeNodLaPozitie(&listaL, 0);
