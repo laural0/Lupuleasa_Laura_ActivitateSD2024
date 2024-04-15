@@ -404,6 +404,19 @@ void dezalocareLivrator(livrator_bolt* livrator_bolt)
 		livrator_bolt->automobil = NULL;
 	}
 }
+void dezalocareLista(Nod** lista)
+{
+	Nod* temp;
+
+	while ((*lista) != NULL)
+	{
+		temp = (*lista);
+		(*lista) = (*lista)->next;
+		dezalocareLivrator(&(temp)->livrator);
+		free(temp);
+		temp = NULL;
+	}
+}
 
 void main()
 {
@@ -430,5 +443,7 @@ void main()
 
 	afisareLista(lista);
 
-	dezalocareLivrator(vector);
+	dezalocareLista(&lista);
+
+	afisareLista(lista);
 }
