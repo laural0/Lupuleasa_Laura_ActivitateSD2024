@@ -1,10 +1,89 @@
-1001,scuter,8.5,0
-1002,masina,7.2,0
-1003,masina,9.3,1
-1004,scuter,6.8,0
-1005,scuter,8.0,1
-1006,masina,7.5,0
-1007,masina,8.2,1
-1008,masina,6.5,0
-1009,scuter,7.8,0
-1010,bicicleta,8.7,1
+package uitest.m4;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import org.testng.asserts.IAssert;
+
+import javax.swing.text.TableView;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+
+public class TestDrive {
+
+
+    static class TableRow {
+
+        private Map<String, String> cells;
+
+        public TableRow(Map<String, String> map) {
+            cells = map;
+        }
+
+
+    }
+
+
+    @Test
+    public void test() {
+
+
+        List<String> currentActualInsuranceProductText = createInsuranceProductText();
+
+        Optional<TableRow> expectedTableRow = createTableRow();
+
+        expectedTableRow.ifPresent(
+                tableRow -> assertAll(
+                        () -> assertEquals(tableRow.cells.get("Denumire produs"), currentActualInsuranceProductText.get(0)),
+                        () -> assertEquals(tableRow.cells.get("Agentia de gestiune polita"), currentActualInsuranceProductText.get(2).split(":")[1].strip()),
+                        () -> assertEquals(tableRow.cells.get("Status Polita").replaceAll("a\\b", ""), currentActualInsuranceProductText.get(3).split(":")[1].strip().replaceAll("a\\b", "")),
+                        () -> assertEquals(tableRow.cells.get("Valoare cont"), currentActualInsuranceProductText.get(5) + " " + currentActualInsuranceProductText.get(6)),
+                        () -> assertEquals(tableRow.cells.get("Prime total Platite"), currentActualInsuranceProductText.get(8) + " " + currentActualInsuranceProductText.get(9)),
+                        () -> assertEquals(tableRow.cells.get("Data Deschidere"), currentActualInsuranceProductText.get(11)),
+                        () -> assertEquals(tableRow.cells.get("Data Maturitate"), currentActualInsuranceProductText.get(13)),
+                        () -> assertEquals(tableRow.cells.get("Data Aniversara"), currentActualInsuranceProductText.get(15))
+                ));
+
+
+    }
+
+    private static List<String> createInsuranceProductText() {
+        return new ArrayList<>() {{
+            add("EDUPLAN"); //check
+            add("Numar polita: 98EDPLN1"); //check
+            add("Agentie de gestiune polita: ALMASU1"); //check
+            add("Status polita: Activ");
+            add("Valoare cont");
+            add("32,00");
+            add("RON");
+            add("Prime total platite");
+            add("2.025,00");
+            add("RON");
+            add("Data deschidere"); //10
+            add("21.09.2016"); //11
+            add("Data maturitate");
+            add("21.04.2019"); //13
+            add("Data aniversara");
+            add("21.04.2020"); //15
+        }};
+    }
+
+    private static Optional<TableRow> createTableRow() {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        map.put("Denumire produs", "EDUPLAN");
+        map.put("Numar Polita", "98EDPLN1");
+        map.put("Status Polita", "Activa");
+        map.put("Agentia de gestiune polita", "ALMASU1");
+        map.put("Data Deschidere", "21.09.2016");
+        map.put("Data Maturitate", "21.04.2019");
+        map.put("Data Aniversara", "21.04.2020");
+        map.put("Valoare cont", "32,00 RON");
+        map.put("Prime total Platite", "2.025,00 RON");
+
+        return Optional.of(new TableRow(map));
+    }
+
+    ;
+}
